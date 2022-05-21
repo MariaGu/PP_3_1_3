@@ -8,11 +8,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
@@ -20,17 +17,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
     private final UserDetailsService userDetailsService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetailsService) {
+    public WebSecurityConfig(BCryptPasswordEncoder bCryptPasswordEncoder, SuccessUserHandler successUserHandler, UserDetailsService userDetailsService) {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
@@ -44,21 +44,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    protected BCryptPasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    protected DaoAuthenticationProvider daoAuthenticationProvider(){
+    protected DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
-
 }

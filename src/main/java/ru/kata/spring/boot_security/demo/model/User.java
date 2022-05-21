@@ -15,16 +15,13 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
     private String name;
 
     @Column(name = "surname")
     private String surName;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -82,7 +79,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities(){
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
     }
 
