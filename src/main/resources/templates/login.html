@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" >-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title></title>-->
+<!--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
+<!--        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+
+<!--</head>-->
+
+<!--<body>-->
+
+<!--<div class="container">-->
+<!--  <div class="row justify-content-md-center">-->
+<!--    <div class="col-lg-4">-->
+<!--      <br>-->
+<!--      <br>-->
+<!--      <h3>Please sign in</h3>-->
+<!--      <form method="post" action="/login">-->
+<!--&lt;!&ndash;      <form method="post" action="j_spring_security_check">&ndash;&gt;-->
+
+<!--        <div class="form-group">-->
+<!--          <input name="username" class="form-control"  placeholder="Email address">-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--          <input name="password" class="form-control"  placeholder="Password">-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-primary btn-block">Sign in</button>-->
+
+
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title tiles:fragment="title">Messages : Create</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
+<body>
+<div tiles:fragment="content">
+    <form name="f" th:action="@{/login}" method="post">
+        <fieldset>
+            <legend>Please Login</legend>
+            <div th:if="${param.error}" class="alert alert-error">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                You have been logged out.
+            </div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username"/>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"/>
+            <div class="form-actions">
+                <button type="submit" class="btn">Log in</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
